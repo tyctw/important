@@ -30,18 +30,34 @@
           <p>重要日程查詢系統</p>
         </div>
       </div>
-      <div class="header-actions">
-        <button class="header-btn" onclick="window.open('https://cap.rcpet.edu.tw/', '_blank')">
-          <i class="fas fa-external-link-alt"></i>
-          官方網站
-        </button>
-        <button class="header-btn" id="notifyBtn">
-          <i class="fas fa-bell"></i>
-          開啟通知
-        </button>
-      </div>
+
+      <button class="menu-toggle" aria-expanded="false" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <nav class="nav-menu">
+        <ul class="nav-menu-items">
+          <li class="nav-menu-item">
+            <a href="#" class="nav-menu-link active">首頁</a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="https://cap.rcpet.edu.tw/" class="nav-menu-link" target="_blank">官方網站</a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="https://rcpe.vercel.app/" class="nav-menu-link" target="_blank">落點分析系統</a>
+          </li>
+        </ul>
+        
+        <div class="header-actions">
+          <button class="header-btn" id="notifyBtn">
+            <i class="fas fa-bell"></i>
+            開啟通知
+          </button>
+        </div>
+      </nav>
     </div>
   </header>
+
   <div class="container">
     <h1>114年國中會考重要日程表</h1>
     

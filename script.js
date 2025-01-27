@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Menu toggle functionality
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      menuToggle.setAttribute('aria-expanded', 
+        menuToggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
+      );
+    });
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (navMenu && navMenu.classList.contains('active') && 
+        !navMenu.contains(e.target) && 
+        !menuToggle.contains(e.target)) {
+      navMenu.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Active menu item
+  const navLinks = document.querySelectorAll('.nav-menu-link');
+  navLinks.forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add('active');
+    }
+  });
+
   const timeline = document.getElementById('timeline');
   const loading = document.getElementById('loading');
   
