@@ -1,89 +1,92 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Menu toggle functionality
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navMenu = document.querySelector('.nav-menu');
+document.addEventListener('DOMContentLoaded', async () => {
+  // Set copyright year
+  document.getElementById('copyright-year').textContent = new Date().getFullYear();
 
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      menuToggle.setAttribute('aria-expanded', 
-        menuToggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
-      );
-    });
-  }
-
-  // Close menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (navMenu && navMenu.classList.contains('active') && 
-        !navMenu.contains(e.target) && 
-        !menuToggle.contains(e.target)) {
-      navMenu.classList.remove('active');
-      menuToggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  // Active menu item
-  const navLinks = document.querySelectorAll('.nav-menu-link');
-  navLinks.forEach(link => {
-    if (link.href === window.location.href) {
-      link.classList.add('active');
-    }
-  });
-
-  const timeline = document.getElementById('timeline');
-  const loading = document.getElementById('loading');
-  
-  function showLoading() {
-    loading.classList.add('active');
-  }
-  
-  function hideLoading() {
-    loading.classList.remove('active');
-  }
-
-  function createEventElement(event) {
-    const div = document.createElement('div');
-    div.className = `event${event.highlight ? ' highlight' : ''}`;
-    
-    div.innerHTML = `
-      <div class="date">${event.date}</div>
-      <div class="content">${event.content}</div>
-      ${event.isLatest ? '<div class="tag">最新</div>' : ''}
-    `;
-    
-    return div;
-  }
-
+  // Modified fetchEvents function with error handling
   async function fetchEvents() {
-    showLoading();
     try {
-      // Replace this URL with your actual Google Apps Script web app URL
-      const response = await fetch('https://script.google.com/macros/s/AKfycby8qNVVffuMNvDjjpIc5bBrRSxqz-iVRd-VxKsHlaz3I5a4VGqXLPxLZ0yMSi2TV5WZnA/exec');
+      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const data = await response.json();
-      
-      timeline.innerHTML = '';
-      data.forEach(event => {
-        const eventElement = createEventElement(event);
-        timeline.appendChild(eventElement);
-      });
-      
-      // Initialize intersection observer after adding elements
-      initializeObserver();
+      if (!data.data || !Array.isArray(data.data)) {
+        throw new Error('Invalid data format');
+      }
+      return data.data;
     } catch (error) {
       console.error('Error fetching events:', error);
-      timeline.innerHTML = '<div class="error">載入失敗，請稍後再試</div>';
-    } finally {
-      hideLoading();
+      throw error; // Re-throw to handle in renderTimeline
     }
   }
 
-  function initializeObserver() {
-    const events = document.querySelectorAll('.event');
+  // Modified renderTimeline function with loading state
+  async function renderTimeline() {
+    const timelineContainer = document.querySelector('.timeline');
+    
+    // Show loading state
+    timelineContainer.innerHTML = `
+      <div class="timeline-skeleton">
+        ${Array(5).fill().map(() => `
+          <div class="skeleton-item">
+            <div class="skeleton-date"></div>
+            <div class="skeleton-content"></div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    timelineContainer.classList.add('loading');
+
+    try {
+      const events = await fetchEvents();
+      
+      // Simulate minimum loading time for better UX
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      timelineContainer.classList.remove('loading');
+      timelineContainer.innerHTML = ''; // Clear loading state
+
+      events.forEach(event => {
+        const timelineItem = document.createElement('div');
+        timelineItem.className = `timeline-item${event.highlight ? ' highlight' : ''}`;
+        timelineItem.dataset.date = event.date;
+
+        timelineItem.innerHTML = `
+          <div class="date">${event.displayDate}</div>
+          <div class="content">
+            ${event.content}
+            <button class="calendar-btn" 
+              data-event="${event.calendarEvent}" 
+              data-date="${event.date}">加入行事曆</button>
+            ${event.tag ? `<div class="tag">${event.tag}</div>` : ''}
+          </div>
+        `;
+
+        timelineContainer.appendChild(timelineItem);
+      });
+
+      // Re-initialize timeline items animation
+      initTimelineAnimation();
+    } catch (error) {
+      timelineContainer.innerHTML = `
+        <div style="text-align: center; padding: 2rem; color: #f44336;">
+          <p>載入資料時發生錯誤</p>
+          <button onclick="location.reload()" class="calendar-btn" style="margin-top: 1rem;">
+            重新整理
+          </button>
+        </div>
+      `;
+      console.error('Error rendering timeline:', error);
+    }
+  }
+
+  function initTimelineAnimation() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
+          entry.target.style.opacity = 1;
           entry.target.style.transform = 'translateY(0)';
         }
       });
@@ -92,57 +95,157 @@ document.addEventListener('DOMContentLoaded', () => {
       rootMargin: '0px 0px -50px 0px'
     });
 
-    events.forEach((event, index) => {
-      event.style.opacity = '0';
-      event.style.transform = 'translateY(30px)';
-      event.style.transitionDelay = `${index * 0.1}s`;
-      event.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-      observer.observe(event);
-    });
-
-    // Add hover effect for timeline dots
-    events.forEach(event => {
-      event.addEventListener('mouseenter', () => {
-        const dot = event.querySelector('::before');
-        if (dot) {
-          dot.style.transform = 'translateY(-50%) scale(1.2)';
-        }
-      });
-      
-      event.addEventListener('mouseleave', () => {
-        const dot = event.querySelector('::before');
-        if (dot) {
-          dot.style.transform = 'translateY(-50%) scale(1)';
-        }
-      });
+    timelineItems.forEach((item, index) => {
+      item.style.opacity = 0;
+      item.style.transform = 'translateY(30px)';
+      item.style.transition = 'all 0.6s ease-out';
+      item.style.transitionDelay = `${index * 0.1}s`;
+      observer.observe(item);
     });
   }
 
-  // Handle notification permission
-  const notifyBtn = document.getElementById('notifyBtn');
-  
-  if (notifyBtn) {
-    notifyBtn.addEventListener('click', async () => {
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-          notifyBtn.innerHTML = '<i class="fas fa-bell"></i> 通知已開啟';
-          notifyBtn.style.background = 'linear-gradient(145deg, #48bb78, #38a169)';
-          notifyBtn.style.color = 'white';
-        }
-      } catch (error) {
-        console.error('Error requesting notification permission:', error);
-      }
-    });
+  // Initialize the timeline
+  await renderTimeline();
 
-    // Update button state based on current permission
-    if (Notification.permission === 'granted') {
-      notifyBtn.innerHTML = '<i class="fas fa-bell"></i> 通知已開啟';
-      notifyBtn.style.background = 'linear-gradient(145deg, #48bb78, #38a169)';
-      notifyBtn.style.color = 'white';
+  // Add hover effect to dates
+  const dates = document.querySelectorAll('.date');
+  dates.forEach(date => {
+    date.addEventListener('mouseenter', () => {
+      date.style.transform = 'scale(1.05)';
+    });
+    date.addEventListener('mouseleave', () => {
+      date.style.transform = 'scale(1)';
+    });
+  });
+
+  // Countdown Timer
+  function updateCountdown() {
+    const examDate = new Date('2025-05-17T08:00:00');
+    const now = new Date();
+    const diff = examDate - now;
+
+    if (diff > 0) {
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = days.toString().padStart(2, '0');
+      document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+      document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
     }
   }
 
-  // Initial load
-  fetchEvents();
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', filterEvents);
+
+  // Filter buttons
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      filterEvents();
+    });
+  });
+
+  function filterEvents() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+    const now = new Date();
+
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      const content = item.querySelector('.content').textContent.toLowerCase();
+      const itemDate = new Date(item.dataset.date);
+      let show = content.includes(searchTerm);
+
+      if (show && activeFilter !== 'all') {
+        if (activeFilter === 'upcoming' && itemDate < now) {
+          show = false;
+        } else if (activeFilter === 'past' && itemDate > now) {
+          show = false;
+        }
+      }
+
+      item.classList.toggle('hidden', !show);
+    });
+  }
+
+  // Calendar functionality
+  document.querySelectorAll('.calendar-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const event = btn.dataset.event;
+      const date = btn.dataset.date;
+      const encodedEvent = encodeURIComponent(event);
+      const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodedEvent}&dates=${date}T000000Z/${date}T235959Z`;
+      window.open(googleCalendarUrl, '_blank');
+    });
+  });
+
+  // Add smooth scrolling for navigation links
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      const navHeight = document.querySelector('.top-nav').offsetHeight;
+      
+      window.scrollTo({
+        top: targetElement.offsetTop - navHeight - 20,
+        behavior: 'smooth'
+      });
+    });
+  });
+
+  // Add active state to nav links on scroll
+  window.addEventListener('scroll', () => {
+    const sections = ['countdown', 'timeline'];
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navHeight = document.querySelector('.top-nav').offsetHeight;
+    
+    let currentSection = '';
+    
+    sections.forEach(sectionId => {
+      const section = document.getElementById(sectionId);
+      if (section.offsetTop - navHeight <= window.scrollY + 100) {
+        currentSection = sectionId;
+      }
+    });
+    
+    navLinks.forEach(link => {
+      link.style.color = link.getAttribute('href').substring(1) === currentSection 
+        ? 'var(--primary-color)' 
+        : 'var(--text-color)';
+    });
+  });
+
+  // Mobile navigation
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+
+  // Close menu when clicking a nav link
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-container')) {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    }
+  });
 });
