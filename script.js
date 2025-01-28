@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Modified fetchEvents function with error handling
   async function fetchEvents() {
     try {
-      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL');
+      const response = await fetch('https://script.google.com/macros/s/AKfycbylIltyA7EW52OGGdA573bit0YcPg54OOIkr9AtAro5eAs8ztxCCT-MKJVoIYbg3ACbmQ/exec');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
