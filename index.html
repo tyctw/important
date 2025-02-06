@@ -1,80 +1,200 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>114年國中會考重要日程</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-  <meta name="description" content="114年國中會考重要日程表 - 包含准考證發放、考試日期、成績公布等重要資訊">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>114學年度國中會考重要日程</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#4776E6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
-  <nav class="top-nav">
-    <div class="nav-container">
-      <a href="/" class="nav-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        會考日程
-      </a>
-      <button class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="nav-links">
-        <a href="#countdown" class="nav-link">倒數計時</a>
-        <a href="#timeline" class="nav-link">重要日程</a>
-      </div>
-    </div>
-  </nav>
-
   <div class="container">
-    <h1>114年國中會考重要日程表</h1>
+    <h1>114學年度國中會考重要日程</h1>
     
-    <div class="features">
-      <div id="countdown" class="countdown">
-        <h2>距離會考還有</h2>
-        <div class="countdown-timer">
-          <div class="time-block">
-            <span id="days">--</span>
-            <label>天</label>
-          </div>
-          <div class="time-block">
-            <span id="hours">--</span>
-            <label>時</label>
-          </div>
-          <div class="time-block">
-            <span id="minutes">--</span>
-            <label>分</label>
-          </div>
-          <div class="time-block">
-            <span id="seconds">--</span>
-            <label>秒</label>
-          </div>
+    <div class="countdown-container">
+      <h2>距離會考還有</h2>
+      <div class="countdown">
+        <div class="countdown-item">
+          <span id="days">--</span>
+          <label>天</label>
+        </div>
+        <div class="countdown-item">
+          <span id="hours">--</span>
+          <label>時</label>
+        </div>
+        <div class="countdown-item">
+          <span id="minutes">--</span>
+          <label>分</label>
+        </div>
+        <div class="countdown-item">
+          <span id="seconds">--</span>
+          <label>秒</label>
         </div>
       </div>
-
-      <div class="search-container">
-        <input type="text" id="searchInput" placeholder="搜尋事項..." class="search-input">
-        <div class="filter-buttons">
-          <button class="filter-btn active" data-filter="all">全部</button>
-          <button class="filter-btn" data-filter="upcoming">即將到來</button>
-          <button class="filter-btn" data-filter="past">已結束</button>
-        </div>
-      </div>
+      <small style="display: block; margin-top: 10px; color: #666;">
+        倒數至 2025/17 上午 8:30 會考開始
+      </small>
     </div>
-    
-    <div id="timeline" class="timeline">
-      <!-- Timeline items will be dynamically inserted here -->
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="搜尋事項..." class="search-input">
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">4/11</div>
+      <div class="timeline-event">國中會考寄發准考證</div>
+      <button class="add-calendar-btn" data-date="2024-04-11" data-event="國中會考寄發准考證">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+  
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">5/6-7</div>
+      <div class="timeline-event">完全免試入學報名</div>
+      <button class="add-calendar-btn" data-date="2024-05-06" data-event="完全免試入學報名">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
     </div>
   </div>
 
-  <footer class="footer">
-    <p>© <span id="copyright-year"></span> 國中會考重要日程. All Rights Reserved.</p>
-  </footer>
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">5/15</div>
+      <div class="timeline-event">完全免試入學放榜</div>
+      <button class="add-calendar-btn" data-date="2024-05-15" data-event="完全免試入學放榜">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
 
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">5/17-18</div>
+      <div class="timeline-event">國中會考考試</div>
+      <button class="add-calendar-btn" data-date="2024-05-17" data-event="國中會考考試">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">5/19</div>
+      <div class="timeline-event">優先免試入學開始辦理</div>
+      <button class="add-calendar-btn" data-date="2024-05-19" data-event="優先免試入學開始辦理">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">6/6</div>
+      <div class="timeline-event">國中會考成績公布</div>
+      <button class="add-calendar-btn" data-date="2024-06-06" data-event="國中會考成績公布">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">6/17</div>
+      <div class="timeline-event">優先免試入學放榜</div>
+      <button class="add-calendar-btn" data-date="2024-06-17" data-event="優先免試入學放榜">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">6/20</div>
+      <div class="timeline-event">就學區免試入學名額發布<br>會考序位區間公告</div>
+      <button class="add-calendar-btn" data-date="2024-06-20" data-event="就學區免試入學名額發布<br>會考序位區間公告">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">6/20-26</div>
+      <div class="timeline-event">就學區免試入學志願選填</div>
+      <button class="add-calendar-btn" data-date="2024-06-20" data-event="就學區免試入學志願選填">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-content">
+      <div class="timeline-date">7/8</div>
+      <div class="timeline-event">就學區免試入學放榜</div>
+      <button class="add-calendar-btn" data-date="2024-07-08" data-event="就學區免試入學放榜">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        加入行事曆
+      </button>
+    </div>
+  </div>
+</div>
+
+    <div class="features-container">
+      <button id="addAllBtn" class="feature-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A2,2,0,0,0,3,6V20a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V6A2,2,0,0,0,19,4ZM19,20H5V9H19Z"/>
+        </svg>
+        全部加入行事曆
+      </button>
+      <button id="shareBtn" class="feature-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M18,16.08c-.76,0-1.44.3-1.96.77L8.91,12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5,1.25.81,2.04.81,1.66,0,3-1.34,3-3s-1.34-3-3-3-3,1.34-3,3c0,.24.04.47.09.7L8.04,9.81C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c.79,0,1.5-.31,2.04-.81l7.12,4.16c-.05.21-.08.43-.08.65,0,1.61,1.31,2.92,2.92,2.92s2.92-1.31,2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18,4c.55,0,1,.45,1,1s-.45,1-1,1-1-.45-1-1,.45-1,1-1zM6,13c-.55,0-1-.45-1-1s.45-1,1-1,1,.45,1,1-.45,1-1,1zm12,7.02c-.55,0-1-.45-1-1s.45-1,1-1,1,.45,1,1-.45,1-1,1z"/>
+        </svg>
+        分享行事曆
+      </button>
+      <button id="exportBtn" class="feature-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path fill="currentColor" d="M19,9h-4V3H9v6H5l7,7L19,9z M5,18v2h14v-2H5z"/>
+        </svg>
+        匯出CSV
+      </button>
+    </div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
